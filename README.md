@@ -52,6 +52,10 @@ Before running the project locally, make sure you have:
   - OpenWeather
 - `uvx` available for local `aviationstack-mcp` usage (or adjust `mcp_client.py` accordingly)
 
+## Technical Architecture
+![architecture](assets/multiagent_travel_planner_architecture.png)
+
+
 ## State and MCP Integration
 
 This project integrates MCP in several places:
@@ -139,3 +143,23 @@ curl -X POST http://127.0.0.1:8000/api/travel \
 5. The itinerary agent creates a practical travel plan.
 6. The final response is returned through the web API.
 
+
+## User Input Request
+![Frontent](assets/TRAVELADVISOR_AI_WITH_MCP.png)
+
+## Generated Response
+![Response](assets/LLM_RESPONSE_PDF.png)
+
+## Langsmith Tracing
+![Tracing](assets/LANGSMITH_TRACING.png)
+
+## Render Cloud Deployment
+![Render](assets/RENDER_POSTGRES_DB_AND_WEBSERVICE_DEPLOYMENT.png)
+
+## Postgres DB storing Long Term Memory
+![Postgres](assets/POSTGRES_LONG_TERM_MEMORY.png)
+
+
+
+## End to End Demo
+![Demo](assets/MULTI_AGENTIC_SYSTEM_WITH_DIFFERENT_MCP.gif)
