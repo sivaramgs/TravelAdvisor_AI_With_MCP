@@ -38,19 +38,6 @@ all coordinated through a LangGraph workflow with MCP-based tool integrations.
 - AviationStack API
 - MCP via `langchain-mcp-adapters` and `mcp`
 
-## Project Structure
-
-```text
-.
-├── app.py                      # FastAPI app entry point
-├── backend.py                  # LangGraph travel workflow
-├── mcp_client.py               # MCP client and tool integration
-├── custom_weather_mcp_server.py# Local weather MCP server
-├── requirements.txt            # Python dependencies
-├── static/                     # Static frontend assets
-├── templates/                  # HTML templates
-└── tools/                      # Flight and web search integrations
-```
 
 ## Prerequisites
 
