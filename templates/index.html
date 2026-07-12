@@ -2,127 +2,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>TravelAdvisor AI With MCP</title>
-
+    <title>TravelAdvisor AI</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
 
-    <div class="page-bg">
-        <div class="gradient-circle circle-1"></div>
-        <div class="gradient-circle circle-2"></div>
-        <div class="gradient-circle circle-3"></div>
+    <div class="sky-bg" aria-hidden="true">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
     </div>
+
+    <header class="top-bar">
+        <div class="wordmark">
+            <span class="wordmark-mark">✈</span>
+            TravelAdvisor<span class="wordmark-accent">AI</span>
+        </div>
+        <div class="stamp">
+            <span class="stamp-dot"></span>
+            Desk open
+        </div>
+    </header>
 
     <main class="app-container">
 
         <section class="hero-section">
-            <div class="badge">
-            TravelAdvisor AI With MCP — A Multi-Agent Travel Planner with LangGraph, MCP and Postgres
-            </div>
-
-            <h1>
-                Plan Your Perfect Trip with AI
-            </h1>
-
-            <p>
-                Search flights, discover hotels, and generate a complete travel itinerary using a multi-agent LangGraph system.
-            </p>
+            <p class="eyebrow">Multi-Agentic Sytem built with · LangGraph · PostgreSQL · MCP Servers [ TAVILY (Remote), AVIATIONSTACK (Local), OPENWEATHER (Custom Local) ]</p>
+            <h1>Your trip,<br><em>drafted and ticketed.</em></h1>
         </section>
 
-        <section class="planner-card">
+        <section class="ticket planner-ticket">
 
-            <div class="card-header">
-                <div>
-                    <h2>Where do you want to go?</h2>
-                    <p>
-                        Example: Plan a complete 7 days Japan trip from India to Singapore under 2000 SGD.
-                    </p>
-                </div>
-
-                <div class="status-pill">
-                    <span class="status-dot"></span>
-                    Online
+            <div class="ticket-top">
+                <span class="ticket-label">Request</span>
+                <div class="route" aria-hidden="true">
+                    <span class="route-dot"></span>
+                    <span class="route-line"></span>
+                    <span class="route-plane">✈</span>
+                    <span class="route-line"></span>
+                    <span class="route-dot"></span>
                 </div>
             </div>
 
-            <div class="input-area">
+            <div class="ticket-body">
+                <label class="field-label" for="userInput">Where to, and what's the plan?</label>
                 <textarea
                     id="userInput"
-                    placeholder="Plan a complete 7 days Singpore trip including flights, hotels and sightseeing under 2000 SGD..."
+                    placeholder="Plan a complete 7 day Singapore trip from India — flights, hotels and sightseeing, under 2000 SGD..."
                 ></textarea>
 
-                <button id="sendBtn" onclick="sendMessage()">
-                    <span id="btnText">Generate Plan</span>
+                <div class="quick-routes">
+                    <span class="quick-routes-label">Popular routes</span>
+                    <div class="chip-row">
+                        <button type="button" onclick="setPrompt('Plan a complete 7 days from India to Singapore under 2000 SGD including flights, hotels and sightseeing.')">
+                            Singapore · 7d
+                        </button>
+                        <button type="button" onclick="setPrompt('Plan a 5 days Dubai trip from Singapore with flights, hotels and sightseeing.')">
+                            Dubai · 5d
+                        </button>
+                        <button type="button" onclick="setPrompt('Plan a 7 days Thailand trip from Malaysia with budget hotels and sightseeing.')">
+                            Thailand · 7d
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="perforation" aria-hidden="true"></div>
+
+            <div class="ticket-stub">
+                <button id="sendBtn" class="send-btn" onclick="sendMessage()">
+                    <span id="btnText">Generate itinerary</span>
                     <span id="btnLoader" class="loader hidden"></span>
                 </button>
             </div>
 
-            <div class="quick-prompts">
-                <button onclick="setPrompt('Plan a complete 7 days from India to Singapore under 2000 SGD including flights, hotels and sightseeing.')">
-                    Singapore Trip
-                </button>
-
-                <button onclick="setPrompt('Plan a 5 days Dubai trip from Singapore with flights, hotels and sightseeing.')">
-                    Dubai Trip
-                </button>
-
-                <button onclick="setPrompt('Plan a 7 days Thailand trip from Malaysia with budget hotels and sightseeing.')">
-                    Thailand Trip
-                </button>
-
-                <button onclick="setPrompt('Give me all country flight info.')">
-                    Global Flights
-                </button>
-            </div>
-
         </section>
 
-        <section id="resultSection" class="result-section hidden">
+        <section id="resultSection" class="ticket result-ticket hidden">
 
-            <div class="result-header">
-                <div>
-                    <h2> AI Travel Advisor</h2>
-                    <p id="threadInfo">Thread ID: -</p>
-                </div>
-
+            <div class="ticket-top">
+                <span class="ticket-label">Itinerary</span>
                 <div class="result-actions">
-                    <button class="copy-btn" onclick="copyResult()">
-                        Copy
-                    </button>
-
-                    <button class="download-btn" onclick="downloadPDF()">
-                        Download PDF
-                    </button>
+                    <button class="copy-btn" onclick="copyResult()">Copy text</button>
+                    <button class="download-btn" onclick="downloadPDF()">Print / Save PDF</button>
                 </div>
             </div>
 
-            <div id="pdfContent" class="pdf-content">
-                <h1 class="pdf-title">AI Travel Plan</h1>
+            <div id="pdfContent" class="ticket-body">
+                <p id="threadInfo" class="booking-ref">Booking ref —</p>
                 <div id="resultBox" class="result-box"></div>
             </div>
 
         </section>
 
-        <section id="errorBox" class="error-box hidden"></section>
+        <section id="errorBox" class="error-stamp hidden"></section>
 
     </main>
 
     <footer>
-        Built with FastAPI, LangGraph, Groq, PostgreSQL, Tavily and AviationStack
+        Powered by FastAPI, Groq , llama-3.3-70b, Render (Host)
     </footer>
 
-    <!-- Markdown Renderer -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-    <!-- PDF Download Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-    <!-- Your Custom JS -->
     <script src="/static/script.js"></script>
 
 </body>

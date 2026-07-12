@@ -10,7 +10,7 @@ load_dotenv()
 os.environ["SSL_CERT_FILE"] = certifi.where()
 os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
 
-API_KEY = os.getenv("AVIATIONSTACK_API_KEY")
+AVIATIONSTACK_API_KEY = os.getenv("AVIATIONSTACK_API_KEY")
 
 # Default origin when user says only destination, e.g. "Japan trip"
 # Change this if your default location is not Bangladesh/Dhaka.
@@ -461,7 +461,7 @@ Arrival:
 
 
 def search_flights(query: str, limit: int = 10):
-    if not API_KEY:
+    if not AVIATIONSTACK_API_KEY:
         return (
             "Flight API error: AVIATIONSTACK_API_KEY is missing.\n"
             "Please add this in your .env file:\n"
@@ -471,7 +471,7 @@ def search_flights(query: str, limit: int = 10):
     dep_iata, arr_iata = parse_route(query)
 
     params = {
-        "access_key": API_KEY,
+        "access_key": AVIATIONSTACK_API_KEY,
         "limit": min(limit, 100),
     }
 

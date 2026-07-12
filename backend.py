@@ -17,8 +17,6 @@ from langchain_core.messages import (
     SystemMessage,
 )
 from langchain_groq import ChatGroq
-# from tools.tavily_tool import tavily_search
-# from tools.flight_tool import search_flights
 from mcp_client import tavily_mcp_search, aviation_mcp_call, extract_destination, forecast_mcp_search, weather_mcp_search
 
 load_dotenv()
@@ -62,8 +60,12 @@ llm = ChatGroq(
 class TravelState(TypedDict):
     messages: Annotated[list[AnyMessage], operator.add]
     user_query: str
+    flight_results: str
+    hotel_results: str
+    itinerary: str
     llm_calls: int
     weather_results: str
+
 # Flight Tool Router Prompt
 FLIGHT_AGENT_PROMPT = """
 You are a travel flight expert.
@@ -151,7 +153,7 @@ def flight_agent(state: TravelState):
 
 def hotel_agent(state: TravelState):
     query = f"Best hotels for {state['user_query']}"
-    # hotel_results = tavily_search(query)
+
     hotel_results = asyncio.run(tavily_mcp_search(query))
 
     return {
@@ -240,8 +242,17 @@ Generate the final travel response for the user.
 User Request:
 {state['user_query']}
 
+Flights:
+{state['flight_results']}
+
+Hotels:
+{state['hotel_results']}
+
 Weather:
 {state['weather_results']}
+
+Itinerary:
+{state['itinerary']}
 
 Format the final answer beautifully using these sections:
 
