@@ -52,6 +52,24 @@ Before running the project locally, make sure you have:
   - OpenWeather
 - `uvx` available for local `aviationstack-mcp` usage (or adjust `mcp_client.py` accordingly)
 
+## State and MCP Integration
+
+This project integrates MCP in several places:
+
+- `Tavily` search uses a remote MCP endpoint at `https://mcp.tavily.com/mcp/`
+- `AviationStack` uses a local stdio MCP command: `uvx aviationstack-mcp`
+- `Weather` is implemented with a custom local MCP server in `weather_mcp_custom_local.py`
+
+The MCP client is defined in `mcp_client.py`, which exposes async helper functions for:
+
+- `tavily_mcp_search`
+- `aviation_mcp_call`
+- `weather_mcp_search`
+- `forecast_mcp_search`
+- `extract_destination`
+
+The main travel workflow in `backend.py` calls these helpers from the flight, hotel, and weather agents.
+
 
 ## Installation
 
@@ -61,3 +79,63 @@ uv venv .venv
 source .venv/bin/activate   # On Windows: .venv\Scripts\activate
 uv add -r requirements.txt
 ```
+
+## Environment Variables
+
+Create a `.env` file in the project root with the following variables:
+
+```env
+GROK_API_KEY=""
+AVIATIONSTACK_API_KEY=""
+TAVILY_API_KEY=""
+DEFAULT_ORIGIN_DATA=""
+OPENWEATHER_API_KEY=""
+DATABASE_URL=
+LANGSMITH_TRACING=""
+LANGSMITH_ENDPOINT=""
+LANGSMITH_PROJECT=""
+LANGSMITH_API_KEY=""
+```
+
+## Running the App
+
+Start the FastAPI server:
+
+```bash
+uv run app.py
+```
+
+Then open your browser at:
+
+```text
+http://127.0.0.1:8000/
+```
+
+## Using MCP Tools
+
+The app uses MCP behind the scenes, so there is no separate frontend change required after the environment is set up.
+
+If you need to customize the weather MCP server command, edit `mcp_client.py` and update the `weather` tool path to your local Python environment.
+
+## API Endpoints
+
+- GET /health - Health check
+- POST /api/travel - Submit a travel request
+
+Example request:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/travel \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Plan a 3-day trip to Tokyo with a budget of $1200"}'
+```
+
+## How the Workflow Works
+
+1. The user submits a travel request.
+2. The flight agent uses MCP-backed AviationStack data.
+3. The hotel agent uses a remote Tavily MCP search.
+4. The weather agent calls the custom weather MCP server.
+5. The itinerary agent creates a practical travel plan.
+6. The final response is returned through the web API.
+
