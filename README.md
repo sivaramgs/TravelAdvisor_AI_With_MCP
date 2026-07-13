@@ -32,11 +32,13 @@ all coordinated through a LangGraph workflow with MCP-based tool integrations.
 - Jinja2 + HTML/CSS/JavaScript frontend
 - LangGraph
 - LangChain
+- Langsmith
 - Groq LLMs
-- PostgreSQL
 - Tavily API
 - AviationStack API
 - MCP via `langchain-mcp-adapters` and `mcp`
+- Render Cloud ( Host and PostgreSQL DB)
+  
 
 
 ## Prerequisites
