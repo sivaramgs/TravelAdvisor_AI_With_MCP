@@ -36,6 +36,7 @@ all coordinated through a LangGraph workflow with MCP-based tool integrations.
 - Groq LLMs
 - Tavily API
 - AviationStack API
+- Openweather API
 - MCP via `langchain-mcp-adapters` and `mcp`
 - Render Cloud ( Host and PostgreSQL DB)
   
